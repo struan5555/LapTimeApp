@@ -119,6 +119,17 @@ function App() {
                                 required
                             />
                         </div>
+                        <div className="mb-3">
+                            <label className="form-label">Weather</label>
+                            <input
+                                type="text"
+                                name="weather"
+                                className="form-control"
+                                value={formData.weather}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
                         <button type="submit" className="btn btn-success">
                             Add Lap Time
                         </button>
@@ -136,6 +147,7 @@ function App() {
                                     <th scope="col">Driver</th>
                                     <th scope="col">Track</th>
                                     <th scope="col">Lap Time (s)</th>
+                                    <th scope="col">Weather</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -144,6 +156,7 @@ function App() {
                                         <td>{lap.driver}</td>
                                         <td>{lap.track}</td>
                                         <td>{lap.lapTime}</td>
+                                        <td>{lap.weather}</td>
                                     </tr>
                                 ))}
                             </tbody>
