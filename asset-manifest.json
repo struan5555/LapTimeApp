@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/LapTimeApp/static/js/main.eb18f2de.js",
+    "index.html": "/LapTimeApp/index.html",
+    "main.eb18f2de.js.map": "/LapTimeApp/static/js/main.eb18f2de.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.eb18f2de.js"
+  ]
+}
