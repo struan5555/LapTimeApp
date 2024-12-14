@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import LapTimeTable from "./components/LapTimeTable";
+import AddLapTimeForm from "./components/AddLapTimeForm";
 
 const API_URL = "https://laptimeapp-backend.onrender.com/api/laptimes";
 
@@ -6,12 +8,16 @@ function App() {
     const [lapTimes, setLapTimes] = useState([]);
     const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
-        driver: "",
-        track: "",
-        lapTime: ""
+        Lap: "",
+        "Total Time": "",
+        Delta: "",
+        "Sector 1": "",
+        "Sector 2": "",
+        "Sector 3": "",
+        Track: "",
+        Date: "",
     });
 
-    // Fetch lap times on component load
     useEffect(() => {
         fetchLapTimes();
     }, []);
@@ -55,23 +61,47 @@ function App() {
 
             const newLap = await response.json();
             setLapTimes([...lapTimes, newLap]); // Update the table with the new lap time
-            setFormData({ driver: "", track: "", lapTime: "" }); // Clear the form
+            setFormData({
+                Lap: "",
+                "Total Time": "",
+                Delta: "",
+                "Sector 1": "",
+                "Sector 2": "",
+                "Sector 3": "",
+                Track: "",
+                Date: "",
+            }); // Clear the form
         } catch (err) {
             console.error("Error adding lap time:", err);
             setError(err.message);
         }
     };
 
+    const handleDelete = async (id) => {
+        try {
+            const response = await fetch(`${API_URL}/${id}`, {
+                method: "DELETE",
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            setLapTimes(lapTimes.filter((lap) => lap._id !== id)); // Remove deleted lap from state
+        } catch (err) {
+            console.error("Error deleting lap time:", err);
+            setError(err.message);
+        }
+    };
+
     return (
         <div className="container">
-            {/* Header */}
             <div className="row">
                 <div className="col text-center">
                     <h1 className="my-5">Lap Times</h1>
                 </div>
             </div>
 
-            {/* Fetch Lap Times Button */}
             <div className="row">
                 <div className="col text-center">
                     <button className="btn btn-primary mb-4" onClick={fetchLapTimes}>
@@ -81,90 +111,31 @@ function App() {
                 </div>
             </div>
 
-            {/* Add Lap Time Form */}
+            {/* Add Lap Time Section */}
             <div className="row">
                 <div className="col">
-                    <form onSubmit={addLapTime} className="mb-5">
-                        <h2>Add Lap Time</h2>
-                        <div className="mb-3">
-                            <label className="form-label">Driver</label>
-                            <input
-                                type="text"
-                                name="driver"
-                                className="form-control"
-                                value={formData.driver}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <label className="form-label">Track</label>
-                            <input
-                                type="text"
-                                name="track"
-                                className="form-control"
-                                value={formData.track}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <label className="form-label">Lap Time (s)</label>
-                            <input
-                                type="number"
-                                name="lapTime"
-                                className="form-control"
-                                value={formData.lapTime}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <label className="form-label">Weather</label>
-                            <input
-                                type="text"
-                                name="weather"
-                                className="form-control"
-                                value={formData.weather}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <button type="submit" className="btn btn-success">
-                            Add Lap Time
-                        </button>
-                    </form>
+                    <button
+                        className="btn btn-info mb-3"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#addLapTimeForm"
+                        aria-expanded="false"
+                        aria-controls="addLapTimeForm"
+                    >
+                        Add Lap Time
+                    </button>
+                    <div className="collapse" id="addLapTimeForm">
+                        <AddLapTimeForm
+                            formData={formData}
+                            handleInputChange={handleInputChange}
+                            addLapTime={addLapTime}
+                        />
+                    </div>
                 </div>
             </div>
 
-            {/* Render Table */}
             <div className="row">
-                <div className="col">
-                    {lapTimes.length > 0 ? (
-                        <table className="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Driver</th>
-                                    <th scope="col">Track</th>
-                                    <th scope="col">Lap Time (s)</th>
-                                    <th scope="col">Weather</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {lapTimes.map((lap, index) => (
-                                    <tr key={index}>
-                                        <td>{lap.driver}</td>
-                                        <td>{lap.track}</td>
-                                        <td>{lap.lapTime}</td>
-                                        <td>{lap.weather}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    ) : (
-                        <p>No lap times to display</p>
-                    )}
-                </div>
+                <LapTimeTable lapTimes={lapTimes} handleDelete={handleDelete} />
             </div>
         </div>
     );
