@@ -1,70 +1,168 @@
-# Getting Started with Create React App
+# LapTimeApp
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+LapTimeApp is a full-stack web application designed for managing and displaying lap time data for racing enthusiasts. It provides features for viewing, adding, and deleting lap times from a MongoDB database. The application includes a React frontend and an Express backend hosted on Render, with GitHub Pages used to deploy the frontend.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **View Lap Times:** Fetch and display all lap times stored in the database.
+- **Add Lap Times:** Add new lap times with details like Lap Number, Total Time, Delta, Sectors, Track, and Date.
+- **Delete Lap Times:** Remove existing lap times from the database.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tech Stack
 
-### `npm test`
+### Frontend
+- **React**
+- **Bootstrap** (for styling)
+- **GitHub Pages** (for deployment)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Backend
+- **Node.js** with Express
+- **MongoDB** using Mongoose
+- **Render** (for deployment)
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Prerequisites
+- Node.js (v16 or later)
+- Git
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Clone the Repository
+```bash
+git clone https://github.com/struan5555/LapTimeApp.git
+cd LapTimeApp
+```
 
-### `npm run eject`
+### Install Dependencies
+```bash
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Running the Application Locally
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Frontend
+1. Navigate to the root directory of the project.
+2. Start the React development server:
+   ```bash
+   npm start
+   ```
+3. Access the app at [http://localhost:3000](http://localhost:3000).
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Backend
+1. Navigate to the backend folder (if applicable).
+2. Start the Express server:
+   ```bash
+   node server.js
+   ```
+3. The backend will run on [http://localhost:5000](http://localhost:5000).
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Deployment
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Frontend
+1. Build the React app:
+   ```bash
+   npm run build
+   ```
+2. Copy the contents of the `build/` directory to the `gh-pages` branch.
+3. Push the `gh-pages` branch to GitHub to deploy the site using GitHub Pages.
 
-### Code Splitting
+### Backend
+The backend is deployed on Render. Ensure the correct environment variables (e.g., `MONGO_URI`) are set in Render.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## API Endpoints
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Base URL
+- Deployed: `https://laptimeapp-backend.onrender.com`
 
-### Making a Progressive Web App
+### Routes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+#### Get All Lap Times
+**GET** `/api/laptimes`
+- Fetch all lap times from the database.
 
-### Advanced Configuration
+#### Add Lap Time
+**POST** `/api/laptimes`
+- Body:
+  ```json
+  {
+    "Lap": "1",
+    "Total Time": "01:32.1",
+    "Delta": "23.23",
+    "Sector 1": "40.7",
+    "Sector 2": "25.58",
+    "Sector 3": "25.86",
+    "Track": "Knockhill",
+    "Date": "19/06/2024"
+  }
+  ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+#### Delete Lap Time
+**DELETE** `/api/laptimes/:id`
+- Deletes a lap time by its `id`.
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Project Structure
+```plaintext
+LapTimeApp/
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── AddLapTimeForm.js
+│   │   └── LapTimeTable.js
+│   ├── App.js
+│   └── index.js
+├── .gitignore
+├── package.json
+├── README.md
+└── server.js
+```
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Environment Variables
+Ensure the following variables are configured in the `.env` file for local development:
+
+```env
+MONGO_URI=<your-mongodb-connection-string>
+PORT=5000
+```
+
+---
+
+## Contributing
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch-name`).
+3. Commit your changes (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature-branch-name`).
+5. Open a pull request.
+
+---
+
+## License
+This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+---
+
+## Acknowledgements
+- [React Documentation](https://reactjs.org/)
+- [Bootstrap](https://getbootstrap.com/)
+- [MongoDB Documentation](https://www.mongodb.com/docs/)
+
+---
+
+## Live Demo
+- **Frontend:** [LapTimeApp on GitHub Pages](https://struan5555.github.io/LapTimeApp/)
+- **Backend:** Hosted on Render
