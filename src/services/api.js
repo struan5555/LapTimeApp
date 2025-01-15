@@ -1,3 +1,6 @@
+const API_URL =
+    process.env.REACT_APP_API_URL || "http://localhost:5000/api/laptimes";
+
 const fetchLapTimes = async () => {
     try {
         const response = await fetch(API_URL); // Fetch all lap times
