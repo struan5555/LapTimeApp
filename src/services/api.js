@@ -1,3 +1,5 @@
+const API_URL = "https://laptimeapp-backend.onrender.com/api/laptimes/tracks";
+
 const fetchLapTimes = async () => {
     try {
         const response = await fetch(API_URL); // Fetch all lap times

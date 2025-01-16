@@ -1,22 +1,80 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link, useParams } from "react-router-dom";
 import LapTimeTable from "./components/LapTimeTable";
-import AddLapTimeForm from "./components/AddLapTimeForm";
 
-const API_URL = "https://laptimeapp-backend.onrender.com/api/laptimes";
+const API_URL = "https://laptimeapp-backend.onrender.com/api";
 
 function App() {
+    const [tracks, setTracks] = useState([]);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetchTracks();
+    }, []);
+
+    const fetchTracks = async () => {
+        try {
+            const response = await fetch(`${API_URL}/laptimes/tracks`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            setTracks(data);
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    return (
+        <Router basename="/LapTimeApp">
+            <div className="container">
+                <header className="my-5 text-center">
+                    <h1>Lap Time App</h1>
+                </header>
+                {error && <p style={{ color: "red" }}>Error: {error}</p>}
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<Home tracks={tracks} />}
+                    />
+                    <Route path="/track/:trackName" element={<TrackDetails />} />
+                </Routes>
+            </div>
+        </Router>
+
+    );
+}
+
+function Home({ tracks }) {
+    return (
+        <div className="row">
+            {tracks.length > 0 ? (
+                tracks.map((track, index) => (
+                    <div className="col-md-4 mb-3" key={index}>
+                        <div className="card">
+                            <div className="card-body">
+                                <h5 className="card-title">{track}</h5>
+                                <Link
+                                    to={`/track/${track}`}
+                                    className="btn btn-primary"
+                                >
+                                    View Lap Times
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            ) : (
+                <p>No tracks available.</p>
+            )}
+        </div>
+    );
+}
+
+function TrackDetails() {
+    const { trackName } = useParams();
     const [lapTimes, setLapTimes] = useState([]);
     const [error, setError] = useState(null);
-    const [formData, setFormData] = useState({
-        Lap: "",
-        "Total Time": "",
-        Delta: "",
-        "Sector 1": "",
-        "Sector 2": "",
-        "Sector 3": "",
-        Track: "",
-        Date: "",
-    });
 
     useEffect(() => {
         fetchLapTimes();
@@ -24,119 +82,24 @@ function App() {
 
     const fetchLapTimes = async () => {
         try {
-            const response = await fetch(API_URL);
+            const response = await fetch(`${API_URL}/laptimes?track=${trackName}`);
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const data = await response.json();
             setLapTimes(data);
         } catch (err) {
-            console.error("Error fetching lap times:", err);
-            setError(err.message);
-        }
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
-
-    const addLapTime = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(API_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const newLap = await response.json();
-            setLapTimes([...lapTimes, newLap]); // Update the table with the new lap time
-            setFormData({
-                Lap: "",
-                "Total Time": "",
-                Delta: "",
-                "Sector 1": "",
-                "Sector 2": "",
-                "Sector 3": "",
-                Track: "",
-                Date: "",
-            }); // Clear the form
-        } catch (err) {
-            console.error("Error adding lap time:", err);
-            setError(err.message);
-        }
-    };
-
-    const handleDelete = async (id) => {
-        try {
-            const response = await fetch(`${API_URL}/${id}`, {
-                method: "DELETE",
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            setLapTimes(lapTimes.filter((lap) => lap._id !== id)); // Remove deleted lap from state
-        } catch (err) {
-            console.error("Error deleting lap time:", err);
             setError(err.message);
         }
     };
 
     return (
-        <div className="container">
-            <div className="row">
-                <div className="col text-center">
-                    <h1 className="my-5">Lap Times</h1>
-                </div>
-            </div>
-
-            <div className="row">
-                <div className="col text-center">
-                    <button className="btn btn-primary mb-4" onClick={fetchLapTimes}>
-                        Fetch Lap Times
-                    </button>
-                    {error && <p style={{ color: "red" }}>Error: {error}</p>}
-                </div>
-            </div>
-
-            {/* Add Lap Time Section */}
-            <div className="row">
-                <div className="col">
-                    <button
-                        className="btn btn-info mb-3"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#addLapTimeForm"
-                        aria-expanded="false"
-                        aria-controls="addLapTimeForm"
-                    >
-                        Add Lap Time
-                    </button>
-                    <div className="collapse" id="addLapTimeForm">
-                        <AddLapTimeForm
-                            formData={formData}
-                            handleInputChange={handleInputChange}
-                            addLapTime={addLapTime}
-                        />
-                    </div>
-                </div>
-            </div>
-
-            <div className="row">
-                <LapTimeTable lapTimes={lapTimes} handleDelete={handleDelete} />
-            </div>
+        <div>
+            <header className="my-5 text-center">
+                <h2>Lap Times for {trackName}</h2>
+            </header>
+            {error && <p style={{ color: "red" }}>Error: {error}</p>}
+            <LapTimeTable lapTimes={lapTimes} />
         </div>
     );
 }
