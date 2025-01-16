@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/LapTimeApp/static/js/main.6f92f524.js",
+    "main.js": "/LapTimeApp/static/js/main.9cd37f75.js",
     "index.html": "/LapTimeApp/index.html",
-    "main.6f92f524.js.map": "/LapTimeApp/static/js/main.6f92f524.js.map"
+    "main.9cd37f75.js.map": "/LapTimeApp/static/js/main.9cd37f75.js.map"
   },
   "entrypoints": [
-    "static/js/main.6f92f524.js"
+    "static/js/main.9cd37f75.js"
   ]
 }
