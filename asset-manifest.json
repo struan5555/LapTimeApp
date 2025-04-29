@@ -1,10 +1,13 @@
 {
   "files": {
-    "main.js": "/LapTimeApp/static/js/main.9cd37f75.js",
+    "main.css": "/LapTimeApp/static/css/main.54989d69.css",
+    "main.js": "/LapTimeApp/static/js/main.6c74d84a.js",
     "index.html": "/LapTimeApp/index.html",
-    "main.9cd37f75.js.map": "/LapTimeApp/static/js/main.9cd37f75.js.map"
+    "main.54989d69.css.map": "/LapTimeApp/static/css/main.54989d69.css.map",
+    "main.6c74d84a.js.map": "/LapTimeApp/static/js/main.6c74d84a.js.map"
   },
   "entrypoints": [
-    "static/js/main.9cd37f75.js"
+    "static/css/main.54989d69.css",
+    "static/js/main.6c74d84a.js"
   ]
 }
