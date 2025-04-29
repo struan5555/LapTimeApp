@@ -1,0 +1,35 @@
+body {
+  background: linear-gradient(135deg, #fcd079 0%, #ff751f 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.85); /* Light white overlay */
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.btn-success {
+  font-size: 18px;
+  padding: 10px 20px;
+}
+
+.card {
+  border-radius: 15px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
