@@ -91,6 +91,7 @@ function TrackDetails() {
     const { trackName } = useParams();
     const [lapTimes, setLapTimes] = useState([]);
     const [error, setError] = useState(null);
+    const [sortAscending, setSortAscending] = useState(true);
 
     useEffect(() => {
         fetchLapTimes();
@@ -109,6 +110,18 @@ function TrackDetails() {
         }
     };
 
+    const timeToSeconds = (timeStr) => {
+        const [min, sec] = timeStr.split(":").map(parseFloat);
+        return min * 60 + sec;
+    };
+
+    const sortedLapTimes = [...lapTimes].sort((a, b) => {
+        const timeA = timeToSeconds(a["Total Time"]);
+        const timeB = timeToSeconds(b["Total Time"]);
+        return sortAscending ? timeA - timeB : timeB - timeA;
+    });
+    
+
     return (
         <div>
             
@@ -125,16 +138,23 @@ function TrackDetails() {
                     </div>
 
                     <div class="col-3">
-                        <Link to="" className="btn btn-success mb-3 ms-2">
-                            🔍 Sort Button
-                        </Link>
+                        <button
+                            className="btn btn-success mb-3 ms-2"
+                            onClick={() => setSortAscending(!sortAscending)}
+                        >
+
+                            {sortAscending ? "⬇ Sort Desc" : "⬆ Sort Asc"}
+                        </button>
+
                     </div>
 
                 </div>
 
             </header>
+
             {error && <p style={{ color: "red" }}>Error: {error}</p>}
-            <LapTimeTable lapTimes={lapTimes} />
+                
+            <LapTimeTable lapTimes={sortedLapTimes} />
         </div>
     );
 }
