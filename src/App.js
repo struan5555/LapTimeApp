@@ -33,11 +33,11 @@ function App() {
                 <header className="my-5 text-center">
                     <div class="row">
 
-                        <div class="col-9">
+                        <div class="col-12 col-sm">
                             <h1>Lap Time App</h1>
                         </div>
 
-                        <div class="col-3">
+                        <div class="col-12 col-sm">
                             <div className="text-center mb-5">
                                 <Link to="/add-lap" className="btn btn-success btn-lg">
                                     ➕ Add Lap Time
@@ -66,7 +66,7 @@ function Home({ tracks }) {
         <div className="row">
             {tracks.length > 0 ? (
                 tracks.map((track, index) => (
-                    <div className="col-md-4 mb-3" key={index}>
+                    <div className="col-12 col-md-4 mb-3" key={index}>
                         <div className="card">
                             <div className="card-body">
                                 <h5 className="card-title">{track}</h5>
@@ -127,17 +127,17 @@ function TrackDetails() {
             
             <header className="my-5 text-center">
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-12 col-sm">
                          <Link to="/" className="btn btn-secondary mb-3">
                             ← Back to Tracks
                         </Link>
                     </div>
 
-                    <div class="col-6">
+                    <div class="col-12 col-sm">
                         <h2>Lap Times for {trackName}</h2>
                     </div>
 
-                    <div class="col-3">
+                    <div class="col-12 col-sm">
                         <button
                             className="btn btn-success mb-3 ms-2"
                             onClick={() => setSortAscending(!sortAscending)}
@@ -153,8 +153,9 @@ function TrackDetails() {
             </header>
 
             {error && <p style={{ color: "red" }}>Error: {error}</p>}
-                
-            <LapTimeTable lapTimes={sortedLapTimes} />
+                <div className="table-responsive">
+                    <LapTimeTable lapTimes={sortedLapTimes} />
+                </div>
         </div>
     );
 }
